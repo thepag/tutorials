@@ -7,4 +7,4 @@
 
 ## Polyfills
 
-* (promise.js)[https://www.promisejs.org/]
+* [promise.js](https://www.promisejs.org/)
