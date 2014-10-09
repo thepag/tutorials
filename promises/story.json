@@ -1,0 +1,8 @@
+{
+	"title": "The title.",
+	"template": "story.html",
+	"default": {
+		"name": "Michael",
+		"word": "Shamone"
+	}
+}
