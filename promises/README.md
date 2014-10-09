@@ -4,14 +4,14 @@ Where [can I use Promises?](http://caniuse.com/#feat=promises)
 
 ## Terminology
 
-An object that is promise-like may be described as *thenable*, since they have a `then` method.
+An object that is **promise-like** may be described as **thenable**, since they have a `then` method.
 
 A promise can be:
 
-* *fulfilled* - The action relating to the promise succeeded.
-* *rejected* - The action relating to the promise failed.
-* *pending* - The action has not yet fulfilled or rejected.
-* *settled* - The action has been fulfilled or rejected.
+* **fulfilled** - The action relating to the promise succeeded.
+* **rejected** - The action relating to the promise failed.
+* **pending** - The action has not yet fulfilled or rejected.
+* **settled** - The action has been fulfilled or rejected.
 
 ## Syntax
 
