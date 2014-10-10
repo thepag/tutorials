@@ -1,6 +1,6 @@
 {
 	"title": "The title.",
-	"template": "story.html",
+	"template": "assets/html/story-chp-1.html",
 	"default": {
 		"name": "Michael",
 		"word": "Shamone"

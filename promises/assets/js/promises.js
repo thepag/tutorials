@@ -9,7 +9,7 @@ var P = (function() {
 
 		init: function() {
 			var self = this;
-			json_promise = self.getJSON('story.json').then(function(json) {
+			json_promise = self.getJSON('assets/json/story.json').then(function(json) {
 				console.log("json: ", json);
 				return self.json = json;
 			}).then(function(json) {
