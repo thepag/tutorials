@@ -1,8 +1,17 @@
 {
-	"title": "The title.",
-	"template": "assets/html/story-chp-1.html",
-	"default": {
+	"title": "The mustache story.",
+	"chapter": [
+		"assets/html/story-chp-1.html",
+		"assets/html/story-chp-2.html",
+		"assets/html/story-chp-3.html",
+		"assets/html/story-chp-4.html"
+	],
+	"mustache": {
 		"name": "Michael",
-		"word": "Shamone"
+		"word": "Shamone",
+		"action": "moonwalked",
+		"place": "park",
+		"animal": "birds",
+		"they": "he"
 	}
 }
