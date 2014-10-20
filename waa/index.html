@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>waa</title>
+		<script src="../canvas/assets/js/graph.js"></script>
+		<script src="assets/js/waa.js"></script>
+		<style>
+			body {
+				background-color: #eee;
+			}
+			canvas {
+				background-color: #fff;
+			}
+			.barchart {
+				float: left;
+				margin: 10px;
+			}
+			.clearboth {
+				clear: both;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Web Audio API</h1>
+		<audio id="track" controls src="http://jplayer.org/audio/mp3/Miaow-07-Bubble.mp3">
+			Nay native HTML media support.
+		</audio>
+
+		<div id="graph-0" class="barchart"></div>
+		<div id="graph-1" class="barchart"></div>
+		<div id="graph-2" class="barchart"></div>
+		<div id="graph-3" class="barchart"></div>
+
+		<script type="text/javascript">
+
+			// Need an input... Will use an audio element for now...
+			// But using the UserMedia stream for camera and mic input is always more engaging.
+
+			var track = document.querySelector("#track");
+			var source = WAA.context.createMediaElementSource(track);
+
+			source.connect(WAA.context.destination);
+
+			// Make a canvas and use the graph.js
+
+			var myGraph = [
+
+				new Graph({
+					target: '#graph-0',
+					// type: 'barchart',
+					// height: 200,
+					width: 20 + (16*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (16*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 255
+				}),
+				new Graph({
+					target: '#graph-1',
+					// type: 'barchart',
+					// height: 200,
+					width: 20 + (5*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (5*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 255
+				}),
+
+				new Graph({
+					target: '#graph-2',
+					type: 'barmirror',
+					// height: 200,
+					width: 20 + (16*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (16*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 255
+				}),
+				new Graph({
+					target: '#graph-3',
+					type: 'barmirror',
+					// height: 200,
+					width: 20 + (5*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (5*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 255
+				})
+			];
+
+
+			// Connect the source to an analyser Probe.
+			var myProbe = WAA.Probe({
+				// context: null,
+				input: source,
+				// output: null,
+				scriptSize: 256, // 512, // [256 - 16384]
+				fftSize: 32, // 512, // [32 - 2048]
+				smoothingTimeConstant: 0.9,
+				maxDecibels: -10,
+				// minDecibels: -100,
+
+				onaudioprocess: function(event) {
+					// Context is the Probe instance.
+					myGraph[0].draw(this.byteFrequencyData);
+					myGraph[2].draw(this.byteFrequencyData);
+
+					var reduced = [];
+
+/*
+					// All of them
+					reduced[0] = (this.byteFrequencyData[0] + this.byteFrequencyData[1] + this.byteFrequencyData[2]) / 3;
+					reduced[1] = (this.byteFrequencyData[3] + this.byteFrequencyData[4] + this.byteFrequencyData[5]) / 3;
+					reduced[2] = (this.byteFrequencyData[6] + this.byteFrequencyData[7] + this.byteFrequencyData[8] + this.byteFrequencyData[9]) / 4;
+					reduced[3] = (this.byteFrequencyData[10] + this.byteFrequencyData[11] + this.byteFrequencyData[12]) / 3;
+					reduced[4] = (this.byteFrequencyData[13] + this.byteFrequencyData[14] + this.byteFrequencyData[15]) / 3;
+*/
+					// Trim the ends. WIP
+					reduced[0] = (this.byteFrequencyData[0] + this.byteFrequencyData[1] + this.byteFrequencyData[2]) / 3;
+					reduced[1] = (this.byteFrequencyData[3] + this.byteFrequencyData[4] + this.byteFrequencyData[5]) / 3;
+					reduced[2] = (this.byteFrequencyData[6] + this.byteFrequencyData[7] + this.byteFrequencyData[8] + this.byteFrequencyData[9]) / 4;
+					reduced[3] = (this.byteFrequencyData[10] + this.byteFrequencyData[11] + this.byteFrequencyData[12]) / 3;
+					reduced[4] = (this.byteFrequencyData[13] + this.byteFrequencyData[14] + this.byteFrequencyData[15]) / 3;
+
+					// Actually, we need to shape the freq domain in log mannar too
+
+					myGraph[1].draw(reduced);
+					myGraph[3].draw(reduced);
+				}
+			});
+
+		</script>
+	</body>
+</html>
