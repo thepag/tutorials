@@ -3,12 +3,125 @@
 	<head>
 		<meta charset="utf-8" />
 		<script src="assets/js/graph.js"></script>
+		<style>
+			body {
+				background-color: #eee;
+			}
+			canvas {
+				background-color: #fff;
+			}
+			.barchart {
+				float: left;
+				margin: 10px;
+			}
+			.clearboth {
+				clear: both;
+			}
+		</style>
 	</head>
 	<body>
-		<div id="graph"></div>
+		<div id="graph-0" class="barchart"></div>
+		<div id="graph-1" class="barchart"></div>
+		<div id="graph-2" class="barchart"></div>
+		<div id="graph-3" class="barchart"></div>
+		<div id="graph-4" class="barchart"></div>
+		<div id="graph-5" class="barchart"></div>
+
+		<div class="clearboth"></div>
+
+		<p>
+			Instead of the current <b>width</b> option, we could have a <b>bins</b> option instead so that we do not need the complex external calculation.
+			We really just want to define the padding inside the canvas.
+		</p>
+
 		<script type="text/javascript">
-			var myGraph = new Graph();
-			myGraph.draw([0,25,50,75,100,10,20,60,20,10,100,75,50,25,0]);
+			var myGraph = [
+
+				new Graph({
+					target: '#graph-0',
+					// type: 'barchart',
+					// height: 200,
+					width: 20 + (15*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (15*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 100
+				}),
+				new Graph({
+					target: '#graph-1',
+					// type: 'barchart',
+					// height: 200,
+					width: 20 + (5*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (5*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 255
+				}),
+
+				new Graph({
+					target: '#graph-2',
+					type: 'barmirror',
+					// height: 200,
+					width: 20 + (15*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (15*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 100
+				}),
+				new Graph({
+					target: '#graph-3',
+					type: 'barmirror',
+					// height: 200,
+					width: 20 + (5*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (5*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 255
+				}),
+
+				new Graph({
+					target: '#graph-4',
+					// type: 'barchart',
+					// height: 200,
+					width: 20 + (15*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (15*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					guides: true, // Shows guides to help setup.
+					maxDataValue: 100
+				}),
+				new Graph({
+					target: '#graph-5',
+					// type: 'barchart',
+					// height: 200,
+					width: 20 + (5*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (5*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					guides: true, // Shows guides to help setup.
+					maxDataValue: 255
+				})
+
+			];
+
+			myGraph[0].draw([5,25,50,75,100,10,20,60,20,10,100,75,50,25,5]); // max=100
+			myGraph[1].draw([64,255,192,255,64]); // max=255
+
+			myGraph[2].draw([5,25,50,75,100,10,20,60,20,10,100,75,50,25,5]); // max=100
+			myGraph[3].draw([64,255,192,255,64]); // max=255
+
+			myGraph[4].draw([5,25,50,75,100,10,20,60,20,10,100,75,50,25,5]); // max=100
+			myGraph[5].draw([64,255,192,255,64]); // max=255
 		</script>
 	</body>
 </html>
