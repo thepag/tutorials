@@ -27,12 +27,25 @@
 			Nay native HTML media support.
 		</audio>
 
+		<h2>Direct output of Web Audio API Analyser Node FFT</h2>
+
 		<div id="graph-0" class="barchart"></div>
 		<div id="graph-1" class="barchart"></div>
 		<div id="graph-2" class="barchart"></div>
 		<div id="graph-3" class="barchart"></div>
 
+		<div class="clearboth"></div>
+
+		<h2>Banded FFT energy into octaves</h2>
+
+		<div id="graph-4" class="barchart"></div>
+		<div id="graph-5" class="barchart"></div>
+		<div id="graph-6" class="barchart"></div>
+		<div id="graph-7" class="barchart"></div>
+
 		<script type="text/javascript">
+
+			console.log('WAA.context.sampleRate = ' + WAA.context.sampleRate);
 
 			// Need an input... Will use an audio element for now...
 			// But using the UserMedia stream for camera and mic input is always more engaging.
@@ -94,11 +107,60 @@
 					// elemWidth: 6,
 					// guides: true, // Shows guides to help setup.
 					maxDataValue: 255
+				}),
+
+				new Graph({
+					target: '#graph-4',
+					// type: 'barchart',
+					// height: 200,
+					width: 20 + (16*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (16*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 255
+				}),
+				new Graph({
+					target: '#graph-5',
+					// type: 'barchart',
+					// height: 200,
+					width: 20 + (5*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (5*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 255
+				}),
+
+				new Graph({
+					target: '#graph-6',
+					type: 'barmirror',
+					// height: 200,
+					width: 20 + (16*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (16*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 255
+				}),
+				new Graph({
+					target: '#graph-7',
+					type: 'barmirror',
+					// height: 200,
+					width: 20 + (5*10) + (10-6),
+					// chartHeight: 180,
+					chartWidth: (5*10) + (10-6),
+					// elemPitch: 10,
+					// elemWidth: 6,
+					// guides: true, // Shows guides to help setup.
+					maxDataValue: 255
 				})
 			];
 
-
-			// Connect the source to an analyser Probe.
+			// Connect the source
 			var myProbe = WAA.Probe({
 				// context: null,
 				input: source,
@@ -116,15 +178,7 @@
 
 					var reduced = [];
 
-/*
 					// All of them
-					reduced[0] = (this.byteFrequencyData[0] + this.byteFrequencyData[1] + this.byteFrequencyData[2]) / 3;
-					reduced[1] = (this.byteFrequencyData[3] + this.byteFrequencyData[4] + this.byteFrequencyData[5]) / 3;
-					reduced[2] = (this.byteFrequencyData[6] + this.byteFrequencyData[7] + this.byteFrequencyData[8] + this.byteFrequencyData[9]) / 4;
-					reduced[3] = (this.byteFrequencyData[10] + this.byteFrequencyData[11] + this.byteFrequencyData[12]) / 3;
-					reduced[4] = (this.byteFrequencyData[13] + this.byteFrequencyData[14] + this.byteFrequencyData[15]) / 3;
-*/
-					// Trim the ends. WIP
 					reduced[0] = (this.byteFrequencyData[0] + this.byteFrequencyData[1] + this.byteFrequencyData[2]) / 3;
 					reduced[1] = (this.byteFrequencyData[3] + this.byteFrequencyData[4] + this.byteFrequencyData[5]) / 3;
 					reduced[2] = (this.byteFrequencyData[6] + this.byteFrequencyData[7] + this.byteFrequencyData[8] + this.byteFrequencyData[9]) / 4;
@@ -135,6 +189,52 @@
 
 					myGraph[1].draw(reduced);
 					myGraph[3].draw(reduced);
+
+					// console.log('onspectrumupdate: source | channelCount ' + source.channelCount + ' | channelCountMode ' + source.channelCountMode + ' | channelInterpretation ' + source.channelInterpretation + ' | ');
+				}
+			});
+
+			// Connect the source
+			var mySpectrum =[];
+			mySpectrum[0] = WAA.Spectrum({
+				// context: null,
+				input: source,
+				// output: null,
+				scriptSize: 1024, // 512, // [256 - 16384]
+				fftSize: 1024, // 512, // [32 - 2048]
+				smoothingTimeConstant: 0.9,
+				maxDecibels: -10,
+				// minDecibels: -100,
+
+				// frequencyBands: [0,63,125,250,500,1000,2000,4000,8000], // Defines the lowest frequency of the band.
+				frequencyBands: [0,63,94,125,188,250,375,500,750,1000,1500,2000,3000,4000,6000,8000], // Defines the lowest frequency of the band.
+
+				onspectrumupdate: function(event) {
+					// Context is the Spectrum instance.
+					myGraph[4].draw(this.byteBandData);
+					myGraph[6].draw(this.byteBandData);
+
+					// console.log('onspectrumupdate: source | channelCount ' + source.channelCount + ' | channelCountMode ' + source.channelCountMode + ' | channelInterpretation ' + source.channelInterpretation + ' | ');
+				}
+			});
+			mySpectrum[1] = WAA.Spectrum({
+				// context: null,
+				input: source,
+				// output: null,
+				scriptSize: 1024, // 512, // [256 - 16384]
+				fftSize: 1024, // 512, // [32 - 2048]
+				smoothingTimeConstant: 0.9,
+				maxDecibels: -10,
+				// minDecibels: -100,
+
+				frequencyBands: [0,125,500,2000,8000], // Defines the lowest frequency of the band.
+
+				onspectrumupdate: function(event) {
+					// Context is the Spectrum instance.
+					myGraph[5].draw(this.byteBandData);
+					myGraph[7].draw(this.byteBandData);
+
+					// console.log('onspectrumupdate: source | channelCount ' + source.channelCount + ' | channelCountMode ' + source.channelCountMode + ' | channelInterpretation ' + source.channelInterpretation + ' | ');
 				}
 			});
 
