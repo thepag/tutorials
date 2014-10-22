@@ -165,7 +165,7 @@ var WAA = (function(document) {
 		updateInputs: function() {
 			// Update the Linear FFT data
 			for(var i = 0, iLen = this.floatFrequencyData.length; i < iLen; i++) {
-				this.floatFrequencyDataLinear[i] = WAA.toLinear(this.floatFrequencyData[i]);
+				this.floatFrequencyDataLinear[i] = this.floatFrequencyData[i] > this.options.minDecibels ? WAA.toLinear(this.floatFrequencyData[i]) : 0;
 			}
 		},
 		updateOutputs: function() {
@@ -179,43 +179,31 @@ var WAA = (function(document) {
 
 			var band = 0;
 			var bandRangeLower, bandRangeUpper;
-			var binUpper;
+			var binLower, binUpper;
 
 			// Reset the array
 			this.floatBandDataLinear = new Float32Array(this.options.frequencyBands.length);
 
-
-
-			// this.options.frequencyBands[band]; // <-- compare with
-
-			// have an option for the highpass cutoff freq. Def 20kHz.
-
-
-			// iterate through each of the linear FFT items.
-			// while keeping track of the bin freq and compare that with the frequencyBands Array option.
-			// ideally we will split any stradling fft bins proportionally.
-
 			for(var i = 0, iLen = this.floatFrequencyDataLinear.length; i < iLen; i++) {
 
+				// The range of the frequency bin.
+				binLower = i * this.frequencyPerBin;
 				binUpper = (i + 1) * this.frequencyPerBin;
 
+				// The range of the frequency band.
 				bandRangeLower = this.options.frequencyBands[band];
 				bandRangeUpper = this.options.frequencyBands[band+1] ? this.options.frequencyBands[band+1] : Number.POSITIVE_INFINITY;
 
-				if(binUpper > bandRangeUpper) {
-					band++;
-				}
-				this.floatBandDataLinear[band] += this.floatFrequencyDataLinear[i];
-
-/*
 				if(binUpper <= bandRangeUpper) {
 					this.floatBandDataLinear[band] += this.floatFrequencyDataLinear[i];
 				} else {
+					// Split the frequency bin between the bands
+					var ratio = (bandRangeUpper % this.frequencyPerBin) / this.frequencyPerBin;
+					this.floatBandDataLinear[band] += ratio * this.floatFrequencyDataLinear[i];
+					this.floatBandDataLinear[band+1] += (1 - ratio) * this.floatFrequencyDataLinear[i];
 					band++;
 				}
-*/
 			}
-
 		}
 	};
 
