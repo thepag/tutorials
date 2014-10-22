@@ -30,8 +30,7 @@
 		<div class="clearboth"></div>
 
 		<p>
-			Instead of the current <b>width</b> option, we could have a <b>bins</b> option instead so that we do not need the complex external calculation.
-			We really just want to define the padding inside the canvas.
+			The <b>width</b> is now calculated from the <b>bins</b> option.
 		</p>
 
 		<script type="text/javascript">
@@ -40,22 +39,20 @@
 				new Graph({
 					target: '#graph-0',
 					// type: 'barchart',
-					// height: 200,
-					width: 20 + (15*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (15*10) + (10-6),
-					// elemPitch: 10,
-					// elemWidth: 6,
+					height: 240,
+					bins: 15, // 15,
+					// trimBins: true,
+					elemPitch: 20,
+					elemWidth: 16,
 					// guides: true, // Shows guides to help setup.
 					maxDataValue: 100
 				}),
 				new Graph({
 					target: '#graph-1',
 					// type: 'barchart',
-					// height: 200,
-					width: 20 + (5*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (5*10) + (10-6),
+					height: 240,
+					bins: 5, // 5,
+					// trimBins: true,
 					// elemPitch: 10,
 					// elemWidth: 6,
 					// guides: true, // Shows guides to help setup.
@@ -65,22 +62,20 @@
 				new Graph({
 					target: '#graph-2',
 					type: 'barmirror',
-					// height: 200,
-					width: 20 + (15*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (15*10) + (10-6),
-					// elemPitch: 10,
-					// elemWidth: 6,
+					height: 240,
+					bins: 15, // 15,
+					trimBins: true,
+					elemPitch: 20,
+					elemWidth: 16,
 					// guides: true, // Shows guides to help setup.
 					maxDataValue: 100
 				}),
 				new Graph({
 					target: '#graph-3',
 					type: 'barmirror',
-					// height: 200,
-					width: 20 + (5*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (5*10) + (10-6),
+					height: 240,
+					bins: 5, // 5,
+					// trimBins: true,
 					// elemPitch: 10,
 					// elemWidth: 6,
 					// guides: true, // Shows guides to help setup.
@@ -90,10 +85,9 @@
 				new Graph({
 					target: '#graph-4',
 					// type: 'barchart',
-					// height: 200,
-					width: 20 + (15*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (15*10) + (10-6),
+					height: 240,
+					bins: 15, // 15,
+					// trimBins: true,
 					// elemPitch: 10,
 					// elemWidth: 6,
 					guides: true, // Shows guides to help setup.
@@ -102,10 +96,9 @@
 				new Graph({
 					target: '#graph-5',
 					// type: 'barchart',
-					// height: 200,
-					width: 20 + (5*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (5*10) + (10-6),
+					height: 240,
+					bins: 5, // 5,
+					// trimBins: true,
 					// elemPitch: 10,
 					// elemWidth: 6,
 					guides: true, // Shows guides to help setup.

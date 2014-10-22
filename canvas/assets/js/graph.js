@@ -12,14 +12,22 @@ var Graph = (function(document) {
 			this.options = {
 				target: '#graph',
 				type: 'barchart',
+
+				bins: 5,
+				trimBins: false, // Trims data arrays longer than the bins option, to bins.
+				maxDataValue: 255,
+
 				height: 200,
-				width: 200,
-				chartHeight: 180,
-				chartWidth: 180,
+				width: null, // [optional] Defaults to automatic calculation
+
+				padding: 10,
+
 				elemPitch: 10,
 				elemWidth: 6,
-				guides: false, // Shows guides to help setup.
-				maxDataValue: 200
+
+				color: '#aaf',
+
+				guides: false // Shows guides to help setup.
 			};
 
 			for(var option in options) {
@@ -29,6 +37,12 @@ var Graph = (function(document) {
 			}
 
 			this.target = typeof this.options.target === 'string' ? document.querySelector(this.options.target) : this.options.target;
+
+			this.chartHeight = this.options.height - (2 * this.options.padding);
+			this.chartWidth = (this.options.bins * this.options.elemPitch) + (this.options.elemPitch - this.options.elemWidth);
+
+			// If no width given, update the width option with automatic value.
+			this.options.width = typeof this.options.width === 'number' ? this.options.width : this.chartWidth + (2 * this.options.padding);
 
 			this.create();
 
@@ -73,51 +87,35 @@ var Graph = (function(document) {
 
 			var normalized;
 
-			var outer_padding_x = (opts.width - opts.chartWidth) / 2;
-			var outer_padding_y = (opts.height - opts.chartHeight) / 2;
+			var bins = opts.trimBins && data.length > opts.bins ? opts.bins : data.length;
 
 			if(ctx) {
 
-				ctx.strokeStyle = '#eee';
-				ctx.fillStyle = '#000';
-
-/*
-				ctx.beginPath();
-
-				ctx.moveTo(0.5 + outer_padding_x, 0.5 + outer_padding_y);
-				ctx.lineTo(0.5 + outer_padding_x + opts.chartWidth, 0.5 + outer_padding_y);
-				ctx.lineTo(0.5 + outer_padding_x + opts.chartWidth, 0.5 + outer_padding_y + opts.chartHeight);
-				ctx.lineTo(0.5 + outer_padding_x, 0.5 + outer_padding_y + opts.chartHeight);
-
-				ctx.closePath();
-				// ctx.fill();
-				ctx.stroke();
-*/
+				ctx.strokeStyle = this.options.color;
+				ctx.fillStyle = this.options.color;
 
 				if(opts.guides) { 
 					ctx.strokeRect(
-						0.5 + outer_padding_x,
-						0.5 + outer_padding_y,
-						opts.chartWidth,
-						opts.chartHeight
+						0.5 + opts.padding,
+						0.5 + opts.padding,
+						this.chartWidth,
+						this.chartHeight
 					);
 				}
 
-				for(var i = 0, iLen = data.length; i < iLen; i++) {
-					normalized = Math.floor(opts.chartHeight * data[i] / opts.maxDataValue);
+				for(var i = 0, iLen = bins; i < iLen; i++) {
+					normalized = Math.floor(this.chartHeight * data[i] / opts.maxDataValue);
 					ctx.fillRect(
-						outer_padding_x + opts.elemPitch - opts.elemWidth + (i * opts.elemPitch),
-						outer_padding_y + opts.chartHeight - normalized,
+						opts.padding + opts.elemPitch - opts.elemWidth + (i * opts.elemPitch),
+						opts.padding + this.chartHeight - normalized,
 						opts.elemWidth,
 						normalized
 					);
 				}
 
-				ctx.strokeStyle = '#000';
-
 				ctx.beginPath();
-				ctx.moveTo(0.5 + outer_padding_x, 0.5 + outer_padding_y + opts.chartHeight);
-				ctx.lineTo(0.5 + outer_padding_x + (data.length * opts.elemPitch) + opts.elemPitch - opts.elemWidth, 0.5 + outer_padding_y + opts.chartHeight);
+				ctx.moveTo(0.5 + opts.padding, 0.5 + opts.padding + this.chartHeight);
+				ctx.lineTo(0.5 + opts.padding + (bins * opts.elemPitch) + opts.elemPitch - opts.elemWidth, 0.5 + opts.padding + this.chartHeight);
 				ctx.stroke();
 
 			}
@@ -129,44 +127,39 @@ var Graph = (function(document) {
 
 			var normalized;
 
-			var outer_padding_x = (opts.width - opts.chartWidth) / 2;
-			var outer_padding_y = (opts.height - opts.chartHeight) / 2;
-
 			if(ctx) {
 
-				ctx.strokeStyle = '#eee';
-				ctx.fillStyle = '#000';
+				ctx.strokeStyle = this.options.color;
+				ctx.fillStyle = this.options.color;
 
 				if(opts.guides) { 
 					ctx.strokeRect(
-						0.5 + outer_padding_x,
-						0.5 + outer_padding_y,
-						opts.chartWidth,
-						opts.chartHeight
+						0.5 + opts.padding,
+						0.5 + opts.padding,
+						this.chartWidth,
+						this.chartHeight
 					);
 				}
 
 				for(var i = 0, iLen = data.length; i < iLen; i++) {
-					normalized = Math.floor(opts.chartHeight * data[i] / opts.maxDataValue / 2);
+					normalized = Math.floor(this.chartHeight * data[i] / opts.maxDataValue / 2);
 					ctx.fillRect(
-						outer_padding_x + opts.elemPitch - opts.elemWidth + (i * opts.elemPitch),
+						opts.padding + opts.elemPitch - opts.elemWidth + (i * opts.elemPitch),
 						opts.height / 2 - normalized,
 						opts.elemWidth,
 						normalized
 					);
 					ctx.fillRect(
-						outer_padding_x + opts.elemPitch - opts.elemWidth + (i * opts.elemPitch),
+						opts.padding + opts.elemPitch - opts.elemWidth + (i * opts.elemPitch),
 						1 + opts.height / 2,
 						opts.elemWidth,
 						normalized
 					);
 				}
 
-				ctx.strokeStyle = '#000';
-
 				ctx.beginPath();
-				ctx.moveTo(0.5 + outer_padding_x, 0.5 + opts.height / 2);
-				ctx.lineTo(0.5 + outer_padding_x + (data.length * opts.elemPitch) + opts.elemPitch - opts.elemWidth, 0.5 + opts.height / 2);
+				ctx.moveTo(0.5 + opts.padding, 0.5 + opts.height / 2);
+				ctx.lineTo(0.5 + opts.padding + (data.length * opts.elemPitch) + opts.elemPitch - opts.elemWidth, 0.5 + opts.height / 2);
 				ctx.stroke();
 			}
 		}
