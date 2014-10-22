@@ -27,6 +27,7 @@ var Graph = (function(document) {
 
 				color: '#aaf',
 
+				axis: false,
 				guides: false // Shows guides to help setup.
 			};
 
@@ -113,11 +114,12 @@ var Graph = (function(document) {
 					);
 				}
 
-				ctx.beginPath();
-				ctx.moveTo(0.5 + opts.padding, 0.5 + opts.padding + this.chartHeight);
-				ctx.lineTo(0.5 + opts.padding + (bins * opts.elemPitch) + opts.elemPitch - opts.elemWidth, 0.5 + opts.padding + this.chartHeight);
-				ctx.stroke();
-
+				if(this.options.axis) {
+					ctx.beginPath();
+					ctx.moveTo(0.5 + opts.padding, 0.5 + opts.padding + this.chartHeight);
+					ctx.lineTo(0.5 + opts.padding + (bins * opts.elemPitch) + opts.elemPitch - opts.elemWidth, 0.5 + opts.padding + this.chartHeight);
+					ctx.stroke();
+				}
 			}
 		},
 		draw_barmirror: function(data) {
@@ -151,16 +153,18 @@ var Graph = (function(document) {
 					);
 					ctx.fillRect(
 						opts.padding + opts.elemPitch - opts.elemWidth + (i * opts.elemPitch),
-						1 + opts.height / 2,
+						opts.height / 2,
 						opts.elemWidth,
 						normalized
 					);
 				}
 
-				ctx.beginPath();
-				ctx.moveTo(0.5 + opts.padding, 0.5 + opts.height / 2);
-				ctx.lineTo(0.5 + opts.padding + (data.length * opts.elemPitch) + opts.elemPitch - opts.elemWidth, 0.5 + opts.height / 2);
-				ctx.stroke();
+				if(this.options.axis) {
+					ctx.beginPath();
+					ctx.moveTo(0.5 + opts.padding, 0.5 + opts.height / 2);
+					ctx.lineTo(0.5 + opts.padding + (data.length * opts.elemPitch) + opts.elemPitch - opts.elemWidth, 0.5 + opts.height / 2);
+					ctx.stroke();
+				}
 			}
 		}
 	};
