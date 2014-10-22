@@ -6,7 +6,12 @@
 		<script src="../canvas/assets/js/graph.js"></script>
 		<script src="assets/js/waa.js"></script>
 		<style>
+			* {
+				margin:0;
+				padding:0;
+			}
 			body {
+				margin: 10px;
 				background-color: #eee;
 			}
 			canvas {
@@ -14,7 +19,7 @@
 			}
 			.barchart {
 				float: left;
-				margin: 10px;
+				margin-right: 10px;
 			}
 			.clearboth {
 				clear: both;
@@ -30,18 +35,26 @@
 		<h2>Direct output of Web Audio API Analyser Node FFT</h2>
 
 		<div id="graph-0" class="barchart"></div>
-		<div id="graph-1" class="barchart"></div>
-		<div id="graph-2" class="barchart"></div>
-		<div id="graph-3" class="barchart"></div>
-
 		<div class="clearboth"></div>
 
 		<h2>Banded FFT energy into octaves</h2>
 
+		<div id="graph-1" class="barchart"></div>
+		<div class="clearboth"></div>
+
+		<h2>Other Graph display options</h2>
+
+		<div id="graph-2" class="barchart"></div>
+		<div id="graph-3" class="barchart"></div>
 		<div id="graph-4" class="barchart"></div>
 		<div id="graph-5" class="barchart"></div>
+		<div class="clearboth"></div>
+
 		<div id="graph-6" class="barchart"></div>
 		<div id="graph-7" class="barchart"></div>
+		<div id="graph-8" class="barchart"></div>
+		<div id="graph-9" class="barchart"></div>
+		<div class="clearboth"></div>
 
 		<script type="text/javascript">
 
@@ -57,141 +70,70 @@
 
 			// Make a canvas and use the graph.js
 
-			var myGraph = [
+			var myGraph = [];
 
-				new Graph({
-					target: '#graph-0',
-					// type: 'barchart',
-					// height: 200,
-					width: 20 + (16*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (16*10) + (10-6),
-					// elemPitch: 10,
-					// elemWidth: 6,
-					// guides: true, // Shows guides to help setup.
-					maxDataValue: 255
-				}),
-				new Graph({
-					target: '#graph-1',
-					// type: 'barchart',
-					// height: 200,
-					width: 20 + (5*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (5*10) + (10-6),
-					// elemPitch: 10,
-					// elemWidth: 6,
-					// guides: true, // Shows guides to help setup.
-					maxDataValue: 255
-				}),
-
-				new Graph({
-					target: '#graph-2',
-					type: 'barmirror',
-					// height: 200,
-					width: 20 + (16*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (16*10) + (10-6),
-					// elemPitch: 10,
-					// elemWidth: 6,
-					// guides: true, // Shows guides to help setup.
-					maxDataValue: 255
-				}),
-				new Graph({
-					target: '#graph-3',
-					type: 'barmirror',
-					// height: 200,
-					width: 20 + (5*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (5*10) + (10-6),
-					// elemPitch: 10,
-					// elemWidth: 6,
-					// guides: true, // Shows guides to help setup.
-					maxDataValue: 255
-				}),
-
-				new Graph({
-					target: '#graph-4',
-					// type: 'barchart',
-					// height: 200,
-					width: 20 + (16*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (16*10) + (10-6),
-					// elemPitch: 10,
-					// elemWidth: 6,
-					// guides: true, // Shows guides to help setup.
-					maxDataValue: 255
-				}),
-				new Graph({
-					target: '#graph-5',
-					// type: 'barchart',
-					// height: 200,
-					width: 20 + (5*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (5*10) + (10-6),
-					// elemPitch: 10,
-					// elemWidth: 6,
-					// guides: true, // Shows guides to help setup.
-					maxDataValue: 255
-				}),
-
-				new Graph({
-					target: '#graph-6',
-					type: 'barmirror',
-					// height: 200,
-					width: 20 + (16*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (16*10) + (10-6),
-					// elemPitch: 10,
-					// elemWidth: 6,
-					// guides: true, // Shows guides to help setup.
-					maxDataValue: 255
-				}),
-				new Graph({
-					target: '#graph-7',
-					type: 'barmirror',
-					// height: 200,
-					width: 20 + (5*10) + (10-6),
-					// chartHeight: 180,
-					chartWidth: (5*10) + (10-6),
-					// elemPitch: 10,
-					// elemWidth: 6,
-					// guides: true, // Shows guides to help setup.
-					maxDataValue: 255
-				})
-			];
+			myGraph[0] = new Graph({
+				target: '#graph-0',
+				type: 'barchart',
+				height: 100,
+				padding: 0,
+				bins: 512,
+				elemPitch: 2,
+				elemWidth: 2
+			});
 
 			// Connect the source
 			var myProbe = WAA.Probe({
 				// context: null,
 				input: source,
 				// output: null,
-				scriptSize: 256, // 512, // [256 - 16384]
-				fftSize: 32, // 512, // [32 - 2048]
-				smoothingTimeConstant: 0.9,
+				scriptSize: 1024, // 512, // [256 - 16384]
+				fftSize: 1024, // 512, // [32 - 2048]
+				// smoothingTimeConstant: 0.8,
 				maxDecibels: -10,
 				// minDecibels: -100,
 
 				onaudioprocess: function(event) {
 					// Context is the Probe instance.
 					myGraph[0].draw(this.byteFrequencyData);
-					myGraph[2].draw(this.byteFrequencyData);
-
-					var reduced = [];
-
-					// All of them
-					reduced[0] = (this.byteFrequencyData[0] + this.byteFrequencyData[1] + this.byteFrequencyData[2]) / 3;
-					reduced[1] = (this.byteFrequencyData[3] + this.byteFrequencyData[4] + this.byteFrequencyData[5]) / 3;
-					reduced[2] = (this.byteFrequencyData[6] + this.byteFrequencyData[7] + this.byteFrequencyData[8] + this.byteFrequencyData[9]) / 4;
-					reduced[3] = (this.byteFrequencyData[10] + this.byteFrequencyData[11] + this.byteFrequencyData[12]) / 3;
-					reduced[4] = (this.byteFrequencyData[13] + this.byteFrequencyData[14] + this.byteFrequencyData[15]) / 3;
-
-					// Actually, we need to shape the freq domain in log mannar too
-
-					myGraph[1].draw(reduced);
-					myGraph[3].draw(reduced);
-
-					// console.log('onspectrumupdate: source | channelCount ' + source.channelCount + ' | channelCountMode ' + source.channelCountMode + ' | channelInterpretation ' + source.channelInterpretation + ' | ');
 				}
+			});
+
+			myGraph[1] = new Graph({
+				target: '#graph-1',
+				type: 'barchart',
+				height: 100,
+				padding: 0,
+				bins: 16,
+				elemPitch: 64,
+				elemWidth: 64
+			});
+
+			myGraph[2] = new Graph({
+				target: '#graph-2',
+				type: 'barchart',
+				bins: 16
+			});
+			myGraph[3] = new Graph({
+				target: '#graph-3',
+				type: 'barchart',
+				bins: 16,
+				elemPitch: 10,
+				elemWidth: 2
+			});
+			myGraph[4] = new Graph({
+				target: '#graph-4',
+				type: 'barmirror',
+				bins: 16,
+				elemPitch: 10,
+				elemWidth: 2
+			});
+			myGraph[5] = new Graph({
+				target: '#graph-5',
+				type: 'barchart',
+				padding: 40,
+				color: '#faa',
+				bins: 16
 			});
 
 			// Connect the source
@@ -202,7 +144,7 @@
 				// output: null,
 				scriptSize: 1024, // 512, // [256 - 16384]
 				fftSize: 1024, // 512, // [32 - 2048]
-				smoothingTimeConstant: 0.9,
+				// smoothingTimeConstant: 0.8,
 				maxDecibels: -10,
 				minDecibels: -90,
 
@@ -211,19 +153,42 @@
 
 				onspectrumupdate: function(event) {
 					// Context is the Spectrum instance.
-					myGraph[4].draw(this.byteBandData);
-					myGraph[6].draw(this.byteBandData);
+					myGraph[1].draw(this.byteBandData);
 
-					// console.log('onspectrumupdate: source | channelCount ' + source.channelCount + ' | channelCountMode ' + source.channelCountMode + ' | channelInterpretation ' + source.channelInterpretation + ' | ');
+					// Other displays
+					myGraph[2].draw(this.byteBandData);
+					myGraph[3].draw(this.byteBandData);
+					myGraph[4].draw(this.byteBandData);
+					myGraph[5].draw(this.byteBandData);
 				}
 			});
+
+			myGraph[6] = new Graph({
+				target: '#graph-6',
+				type: 'barchart',
+				height: 60,
+				padding: 2,
+				bins: 5,
+				elemPitch: 25,
+				elemWidth: 23
+			});
+			myGraph[7] = new Graph({
+				target: '#graph-7',
+				type: 'barmirror',
+				height: 60,
+				padding: 2,
+				bins: 5,
+				elemPitch: 25,
+				elemWidth: 23
+			});
+
 			mySpectrum[1] = WAA.Spectrum({
 				// context: null,
 				input: source,
 				// output: null,
 				scriptSize: 1024, // 512, // [256 - 16384]
 				fftSize: 1024, // 512, // [32 - 2048]
-				smoothingTimeConstant: 0.9,
+				// smoothingTimeConstant: 0.9,
 				maxDecibels: -10,
 				minDecibels: -90,
 
@@ -231,10 +196,47 @@
 
 				onspectrumupdate: function(event) {
 					// Context is the Spectrum instance.
-					myGraph[5].draw(this.byteBandData);
+					myGraph[6].draw(this.byteBandData);
 					myGraph[7].draw(this.byteBandData);
+				}
+			});
 
-					// console.log('onspectrumupdate: source | channelCount ' + source.channelCount + ' | channelCountMode ' + source.channelCountMode + ' | channelInterpretation ' + source.channelInterpretation + ' | ');
+			myGraph[8] = new Graph({
+				target: '#graph-8',
+				type: 'barchart',
+				height: 60,
+				padding: 0,
+				bins: 1,
+				elemPitch: 25,
+				elemWidth: 25
+			});
+			myGraph[9] = new Graph({
+				target: '#graph-9',
+				type: 'barchart',
+				height: 60,
+				padding: 3,
+				color: '#faa',
+				bins: 1,
+				elemPitch: 25,
+				elemWidth: 23
+			});
+
+			mySpectrum[2] = WAA.Spectrum({
+				// context: null,
+				input: source,
+				// output: null,
+				scriptSize: 1024, // 512, // [256 - 16384]
+				fftSize: 1024, // 512, // [32 - 2048]
+				// smoothingTimeConstant: 0.9,
+				maxDecibels: -10,
+				minDecibels: -90,
+
+				frequencyBands: [0], // Defines the lowest frequency of the band.
+
+				onspectrumupdate: function(event) {
+					// Context is the Spectrum instance.
+					myGraph[8].draw(this.byteBandData);
+					myGraph[9].draw(this.byteBandData);
 				}
 			});
 

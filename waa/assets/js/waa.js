@@ -43,7 +43,7 @@ var WAA = (function(document) {
 				fftSize: 512,
 				maxDecibels: -30,
 				minDecibels: -100,
-				smoothingTimeConstant: 0.99,
+				smoothingTimeConstant: 0.8,
 				onaudioprocess: null
 			};
 			// Read in instancing options.
