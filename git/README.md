@@ -8,12 +8,12 @@ A cheat sheet for the commands I use a lot.
 
 From the branch to be branched:
 ```
-git branch *branch_name*
-git checkout *branch_name*
+git branch branch_name
+git checkout branch_name
 ```
 Concise:
 ```
-git checkout -b *branch_name*
+git checkout -b branch_name
 ```
 Example, creating a branch called *refactor* from the *master* branch:
 ```
@@ -27,7 +27,7 @@ I always keep the name of the local and remote branches identical.
 
 First create your local branch and move to it, then:
 ```
-git push -u *remote* *branch_name*
+git push -u remote_name branch_name
 ```
 Example, creating a remote branch associated with my local *refactor* branch:
 ```
