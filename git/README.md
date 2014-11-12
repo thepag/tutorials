@@ -2,6 +2,11 @@
 
 A cheat sheet for the commands I use a lot.
 
+## Resources
+
+* [Atlassian git tutorial](https://www.atlassian.com/git/)
+* [A successful Git branching model](http://nvie.com/posts/a-successful-git-branching-model/)
+
 ## Branches
 
 ### Branch Info
@@ -107,16 +112,3 @@ Remote tags:
 ```
 git push origin :refs/tags/tag_name
 ```
-
-
-
-## Example flows
-
-After merging a local branch, you may wish to delete it.
-
-
-
-## Resources
-
-* [Atlassian git tutorial](https://www.atlassian.com/git/)
-* [A successful Git branching model](http://nvie.com/posts/a-successful-git-branching-model/)
