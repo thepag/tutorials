@@ -1,9 +1,19 @@
-# React.js : Drag & Drop
+# React : Drag & Drop
+
+Used the react.js dev tools to build the `js` folder from teh `jsx` folder.
+
+```
+jsx --extension jsx --watch jsx/ js/
+```
+
+## Reference
+
+### React.js
 
 - [React.js](http://facebook.github.io/react/)
 - [Starter Kit](http://facebook.github.io/react/docs/getting-started.html)
 
-## Reference
+### Drag & Drop Tutorial
 
 The reference example uses CoffeeScript and lodash... So I removed that and left it as JavaScript and React.
 
