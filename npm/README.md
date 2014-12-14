@@ -38,7 +38,7 @@ These files will go in the `node_modules` folder in the path where you executed 
 npm list -g --depth=0
 ```
 
-Lists the NPM packages you installed using `npm install -g` globle option.
+Lists the NPM packages you installed using `npm install -g` global option.
 
 ```
 /usr/local/lib
