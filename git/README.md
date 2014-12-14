@@ -81,6 +81,72 @@ For when your local branch turned out a dead-end and you want to force its remov
 git branch -D branch_name
 ```
 
+## Forks
+
+### Forking
+
+- on gitub, navigate to the repository youwant to fork and click **fork** in the top-right.
+- clone your fork `git clone https://github.com/YOUR_USERNAME/YOUR_FORK.git`
+- Change to your fork folder `cd YOUR_FORK`
+- Review your remotes `git remote -v`
+```
+origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+```
+- Add the original repository
+```
+git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
+```
+- Review your remotes `git remote -v`
+```
+origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (fetch)
+upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (push)
+```
+
+For example:
+
+On gitub, navigate to the happyworm/jPlayer repository and click **fork** in the top-right.
+```
+$ cd ~/Projects/
+$ git clone https://github.com/YOUR_USERNAME/jPlayer.git
+$ cd jPlayer
+$ git remote add upstream https://github.com/happyworm/jPlayer.git
+$ git remote -v
+origin  https://github.com/YOUR_USERNAME/jPlayer.git (fetch)
+origin  https://github.com/YOUR_USERNAME/jPlayer.git (push)
+upstream  https://github.com/happyworm/jPlayer.git (fetch)
+upstream  https://github.com/happyworm/jPlayer.git (push)
+```
+
+
+### Syncing a Fork
+
+```
+git fetch upstream
+git checkout master
+git merge upstream/master
+```
+
+### OS X Mac Character Case Fork Issue
+
+In rare cases, an OS X user may have problems after forking a repository due to the character capitalization of the filename.
+This means that there are two or more filenames that look that same to the file system.
+For example, `Hello.md` and `hello.md` get confused in git on OS X.
+
+```
+git update-index --assume-unchanged ajax/libs/Sortable/package.json
+git update-index --assume-unchanged ajax/libs/sortable/package.json
+```
+
+Reference: This was encountered when forking the [cdnjs](https://github.com/cdnjs/cdnjs.git
+[Issue 3792](https://github.com/cdnjs/cdnjs/issues/3792) has more details.
+
+
+
+
+
 ## Tags
 
 ### Creating Tags
