@@ -136,16 +136,20 @@ This means that there are two or more filenames that look that same to the file 
 For example, `Hello.md` and `hello.md` get confused in git on OS X.
 
 ```
+git update-index --assume-unchanged path/to/local/file.ext
+git update-index --assume-unchanged path/to/local/File.ext
+```
+Additionally, it may not be the file with the problem, it can be the path.
+```
+git update-index --assume-unchanged path/to/Local/file.ext
+```
+
+*For reference:** This was encountered while forking the [cdnjs](https://github.com/cdnjs/cdnjs.git) repository.
+[Issue 3792](https://github.com/cdnjs/cdnjs/issues/3792) has more details.
+```
 git update-index --assume-unchanged ajax/libs/Sortable/package.json
 git update-index --assume-unchanged ajax/libs/sortable/package.json
 ```
-
-Reference: This was encountered when forking the [cdnjs](https://github.com/cdnjs/cdnjs.git
-[Issue 3792](https://github.com/cdnjs/cdnjs/issues/3792) has more details.
-
-
-
-
 
 ## Tags
 
