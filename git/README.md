@@ -123,10 +123,36 @@ upstream  https://github.com/happyworm/jPlayer.git (push)
 
 ### Syncing a Fork
 
+You can `fetch` and `merge` the `upstream` branch.
+
 ```
 git fetch upstream
 git checkout master
 git merge upstream/master
+```
+
+### Rebasing a Fork
+
+Before issuing a pull request, `rebase` your fork to the `upstream` branch.
+
+```
+git fetch upstream
+git checkout master
+git rebase upstream/master
+```
+
+Example with a new branch of your fork.
+
+```
+git checkout -b fix-issue-123 master
+git push -u origin fix-issue-123
+```
+Develop the fix for issue 123 over the next month.
+```
+git commit -am "Fix #123 Followed by a brief description"
+git fetch upstream
+git checkout fix-issue-123
+git rebase upstream/master
 ```
 
 ### OS X Mac Character Case Fork Issue
