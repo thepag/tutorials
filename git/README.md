@@ -141,8 +141,9 @@ git checkout master
 git rebase upstream/master
 ```
 
-Example with a new branch of your fork.
+### Example Pull Request with a new branch of your fork.
 
+Create the fork as described above. Then make a branch of the master branch for you to make your changes.
 ```
 git checkout -b fix-issue-123 master
 git push -u origin fix-issue-123
@@ -153,7 +154,9 @@ git commit -am "Fix #123 Followed by a brief description"
 git fetch upstream
 git checkout fix-issue-123
 git rebase upstream/master
+git push
 ```
+Then issue the [pull request](https://help.github.com/articles/using-pull-requests/) from your `fix-issue-123` branch.
 
 ### OS X Mac Character Case Fork Issue
 
@@ -167,6 +170,7 @@ git update-index --assume-unchanged path/to/local/File.ext
 ```
 Additionally, it may not be the file with the problem, it can be the path.
 ```
+git update-index --assume-unchanged path/to/local/file.ext
 git update-index --assume-unchanged path/to/Local/file.ext
 ```
 
